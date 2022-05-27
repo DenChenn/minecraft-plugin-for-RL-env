@@ -1,0 +1,7 @@
+name: RLEnvironmentPlugin
+version: '${project.version}'
+main: m1pro.parkour.god.rlenvironmentplugin.RLEnvironmentPlugin
+api-version: 1.18
+prefix: RLEnvironmentPlugin
+authors: [yentingchen]
+description: This is a plugin for training RL-based model in minecraft
