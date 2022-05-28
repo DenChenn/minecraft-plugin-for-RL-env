@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "io.grpc.data_transfer";
+
+service DataTransfer {
+  rpc SendDataToModel (Data) returns (ModelResponse) {}
+}
+
+message Data {
+  int32 x = 1;
+  int32 y = 2;
+  int32 z = 3;
+  string player_state = 4;
+}
+
+message ModelResponse {
+  string status = 1;
+}
