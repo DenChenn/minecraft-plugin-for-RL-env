@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "io.grpc.examples.route_guide";
+
+service DataTransfer {
+  rpc send_data_to_model (stream Data) returns (stream ModelResponse) {}
+}
+
+message Data {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  string player_state = 4;
+}
+
+message ModelResponse {
+  string status = 1;
+}
