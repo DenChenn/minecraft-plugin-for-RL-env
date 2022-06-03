@@ -110,3 +110,4 @@ buildNumber.properties
 run/
 
 .DS_Store
+__pycache__
