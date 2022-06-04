@@ -49,7 +49,9 @@ public class PlayerEvents implements Listener {
                 this.PastLocationList = new ArrayList<>();
                 e.setCancelled(true);
                 player.setHealth(20.0);
-                player.teleport(new Location(player.getWorld(), 100, 63, 109));
+                player.setFoodLevel(20);
+                player.setFireTicks(0);
+                player.teleport(new Location(player.getWorld(), 100.5, 67, 109.5));
                 player.sendMessage(ChatColor.RED + "Player " + player.getName() + "is dead");
 
                 Location locationBelowPlayer = player.getLocation().subtract(0, 1, 0);
