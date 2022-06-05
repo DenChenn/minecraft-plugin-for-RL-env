@@ -37,7 +37,11 @@ public class PlayerEvents implements Listener {
             this.PastLocationList.add(integerLocation);
 
             // Send data to python server
-            this.client.sendDataToModel(xInteger, yInteger, zInteger, "ALIVE");
+            if(xInteger == 100 && yInteger == 65 && zInteger == 109){
+                this.client.sendDataToModel(xInteger, yInteger, zInteger, "DEAD");
+            } else {
+                this.client.sendDataToModel(xInteger, yInteger, zInteger, "ALIVE");
+            }
         }
     }
 
@@ -52,15 +56,6 @@ public class PlayerEvents implements Listener {
                 player.setFoodLevel(20);
                 player.setFireTicks(0);
                 player.teleport(new Location(player.getWorld(), 100.5, 67, 109.5));
-                player.sendMessage(ChatColor.RED + "Player " + player.getName() + "is dead");
-
-                Location locationBelowPlayer = player.getLocation().subtract(0, 1, 0);
-                int xInteger = (int) Math.floor(locationBelowPlayer.getX());
-                int yInteger = (int) Math.floor(locationBelowPlayer.getY());
-                int zInteger = (int) Math.floor(locationBelowPlayer.getZ());
-
-                // Send data to python server
-                this.client.sendDataToModel(xInteger, yInteger, zInteger, "DEAD");
             }
         }
     }
