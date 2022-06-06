@@ -1,81 +1,27 @@
-import pymongo
 import numpy as np
 from action import *
 import random
-from model import *
-from secret import *
-
-cluster = pymongo.MongoClient(CONNECT_STRING)
-db = cluster["minecraft"]
-collection = db["state"]
-
-def action_selector(index):
-    if index == 0:
-        walk_forward_one_block()
-    elif index == 1:
-        short_jump()
-    elif index == 2:
-        long_jump()
-    elif index == 3:
-        turn_left()
-        time.sleep(0.01)
-        walk_forward_one_block()
-    elif index == 4:
-        turn_right()
-        time.sleep(0.01)
-        walk_forward_one_block()
-    elif index == 5:
-        turn_left()
-        time.sleep(0.01)
-        short_jump()
-    elif index == 6:
-        turn_right()
-        time.sleep(0.01)
-        short_jump()
-    elif index == 7:
-        turn_left()
-        time.sleep(0.01)
-        long_jump()
-    elif index == 8:
-        turn_right()
-        time.sleep(0.01)
-        long_jump()
-
-
-def get_current_state():
-    data_cursor = collection.find().sort('create_at', pymongo.DESCENDING).limit(1)
-    state = {}
-    for d in data_cursor:
-        state = d
-
-    position = Position(state['x'], state['y'], state['z'])
-    this_player_state = state['player_state']
-    return position, this_player_state
-
+from util import *
 
 # initial a q table with 40 states and 9 kinds of action
 q_table = np.zeros((40, 9))
 
 # number of episode we will run
-n_episodes = 2
+n_episodes = 1
 
 # maximum of iteration per episode
-max_iter_episode = 100
+max_iter_episode = 1000
 
-# initialize the exploration probability to 1
-q_exp_table = [1.0 for i in range(40)]
-
-# exploration decreasing decay for exponential decreasing
-exploration_decreasing_decay = 0.001
+q_exp_table = [0.1 for i in range(40)]
 
 # minimum of exploration proba
-min_exploration_proba = 0.01
+min_exploration_proba = 0.001
 
 # discounted factor
-gamma = 0.99
+gamma = 0.5
 
 # learning rate
-lr = 0.1
+lr = 0.3
 
 # wait for start
 for i in range(5):
@@ -105,14 +51,16 @@ for e in range(n_episodes):
             action_selector(action_index)
             print("####################")
             print("用賽的")
+            print("Action index: " + str(action_index))
             print(q_exp_table)
             print("####################")
         else:
             # map current position to its state index (column index), and get the max option
-            action_index = np.argmax(q_table[current_state_index, :])
+            action_index = find_max_column_index(q_table[current_state_index, :])
             action_selector(action_index)
             print("####################")
             print("技術判斷")
+            print("Action index: " + str(action_index))
             print(q_exp_table)
             print("####################")
 
@@ -126,7 +74,7 @@ for e in range(n_episodes):
         if player_state == "ALIVE":
             reward = 1
             # if we get it, decrease the guessing probability
-            q_exp_table[current_state_index] = max(min_exploration_proba, q_exp_table[current_state_index] - 0.4)
+            q_exp_table[current_state_index] = max(min_exploration_proba, q_exp_table[current_state_index] - 0.6)
         else:
             reward = -1
 
@@ -149,7 +97,7 @@ for e in range(n_episodes):
 
         current_position = next_position
 
-    # We update the exploration proba using exponential decay formula
-
+# save the training result
+np.save('q_table.npy', q_table)
 
 
