@@ -37,11 +37,11 @@ class Position:
             return 11
         elif self.equal(96, 65, 117):
             return 12
-        elif self.equal(97, 65, 117):
+        elif self.equal(96, 65, 118):
             return 13
-        elif self.equal(98, 65, 117):
+        elif self.equal(97, 65, 118):
             return 14
-        elif self.equal(99, 65, 117):
+        elif self.equal(98, 65, 118):
             return 15
         elif self.equal(99, 65, 118):
             return 16
