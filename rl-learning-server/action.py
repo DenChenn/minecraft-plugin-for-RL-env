@@ -45,3 +45,7 @@ def short_jump():
     time.sleep(0.1)
     pyautogui.keyUp('w')
 
+def center_cursor():
+    pyautogui.press('esc')
+    time.sleep(0.001)
+    pyautogui.press('esc')
