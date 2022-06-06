@@ -26,7 +26,7 @@ public class PlayerEvents implements Listener {
 
         String blockNameBelowPlayer = locationBelowPlayer.getBlock().getType().toString();
 
-        if(!this.PastLocationList.contains(integerLocation) && !blockNameBelowPlayer.equals("AIR")) {
+        if(!this.PastLocationList.contains(integerLocation) && blockNameBelowPlayer.equals("IRON_BLOCK")) {
             String realLocationX = String.valueOf(xInteger);
             String realLocationY = String.valueOf(yInteger);
             String realLocationZ = String.valueOf(zInteger);
@@ -41,6 +41,12 @@ public class PlayerEvents implements Listener {
                 this.client.sendDataToModel(xInteger, yInteger, zInteger, "DEAD");
             } else {
                 this.client.sendDataToModel(xInteger, yInteger, zInteger, "ALIVE");
+                // center inside the block
+                Location center = new Location(player.getWorld(), (float) xInteger + 0.5, (float) yInteger + 2,
+                        (float) zInteger + 0.5);
+                center.setPitch(player.getLocation().getPitch());
+                center.setYaw(player.getLocation().getYaw());
+                player.teleport(center);
             }
         }
     }
