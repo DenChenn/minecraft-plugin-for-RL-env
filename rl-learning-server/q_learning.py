@@ -6,15 +6,16 @@ from util import *
 # initial a q table with 40 states and 9 kinds of action
 q_table = np.zeros((40, 9))
 
-# number of episode we will run
+# how many times we want to play the game
 n_episodes = 1
 
-# maximum of iteration per episode
+# maximum of iteration per episode (upper bound for training time)
 max_iter_episode = 1000
 
+# store "guessing probability for each state"
 q_exp_table = [0.1 for i in range(40)]
 
-# minimum of exploration proba
+# minimum of exploration probability
 min_exploration_proba = 0.001
 
 # discounted factor
@@ -39,18 +40,13 @@ for e in range(n_episodes):
     for i in range(max_iter_episode):
         action_index = -1
         current_state_index = current_position.get_state_index()
-
         # we sample a float from a uniform distribution over 0 and 1
-        # if the sampled float is less than the exploration proba
-        #     the agent selects a random action
-        # else
-        #     he exploits his knowledge using the bellman equation
 
         if np.random.uniform(0,1) < q_exp_table[current_state_index]:
             action_index = random.randint(0, 8)
             action_selector(action_index)
             print("####################")
-            print("用賽的")
+            print("Random guess")
             print("Action index: " + str(action_index))
             print(q_exp_table)
             print("####################")
@@ -59,7 +55,7 @@ for e in range(n_episodes):
             action_index = find_max_column_index(q_table[current_state_index, :])
             action_selector(action_index)
             print("####################")
-            print("技術判斷")
+            print("Using q-table")
             print("Action index: " + str(action_index))
             print(q_exp_table)
             print("####################")
